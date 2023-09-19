@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -20,7 +22,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
        padding: EdgeInsets.all(12),
        child: Column(
          children: [
-          Text('Add New Task',
+          Text(AppLocalizations.of(context)!.add_new_task,
           style: Theme.of(context).textTheme.titleMedium,),
            Form(
              key: formKey,
@@ -60,7 +62,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                    ),
                    Padding(
                      padding: const EdgeInsets.all(8.0),
-                     child: Text('Select Time',
+                     child: Text(AppLocalizations.of(context)!.select_time,
                      style: Theme.of(context).textTheme.titleSmall,),
                    ),
                    InkWell(
@@ -79,7 +81,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                    ElevatedButton(onPressed: (){
                      AddTask();
                    },
-                       child: Text('Add',
+                       child: Text(AppLocalizations.of(context)!.add,
                        style: Theme.of(context).textTheme.titleMedium,))
 
 

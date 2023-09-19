@@ -60,5 +60,55 @@ class MyTheme{
     )
 
   );
+  static ThemeData darkTheme = ThemeData(
+      primaryColor: DarkblackColor,
+      scaffoldBackgroundColor: DarkblueColor,
+      appBarTheme: AppBarTheme(
+        backgroundColor: primaryLight,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ))
+          )
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        selectedItemColor: primaryLight,
+        unselectedItemColor: grayColor,
+        showUnselectedLabels: false,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: primaryLight
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+              )
+          )
+      ),
+      textTheme: TextTheme(
+          titleLarge: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: primaryLight,
+              fontSize: 22
+          ),
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: primaryLight,
+            fontSize: 20,
+          ),
+          titleSmall: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: primaryLight,
+            fontSize: 18,
+          )
+
+      )
+
+  );
+
 
 }

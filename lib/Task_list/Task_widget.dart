@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/TaskDetailsScreen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class TaskListWidget extends StatelessWidget {
 
@@ -53,14 +55,14 @@ class TaskListWidget extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text('Task Title',
+                      child: Text(AppLocalizations.of(context)!.task_title,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: Theme.of(context).primaryColor
                         ),),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Text('description',
+                      child: Text(AppLocalizations.of(context)!.description,
                           style: Theme.of(context).textTheme.titleSmall!.copyWith(
                               color: MyTheme.blackColor)),
                     ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class TaskDetailsScreen extends StatefulWidget {
   static const String routeName = 'Details Screen';
@@ -17,7 +19,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text('To Do List',
+        title: Text(AppLocalizations.of(context)!.todo_list,
         style: Theme.of(context).textTheme.titleLarge),
       ),
       body: Container(
@@ -31,7 +33,8 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Edit Task',textAlign: TextAlign.center,
+                Text(AppLocalizations.of(context)!.edit_task,
+                  textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,),
                 SizedBox(height: 50),
                 Form(
@@ -42,7 +45,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             decoration: InputDecoration(
-                                hintText: 'This is Title'
+                                hintText: AppLocalizations.of(context)!.this_is_title
                             ),
 
                           ),
@@ -51,7 +54,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             decoration: InputDecoration(
-                              hintText: 'Task Details',
+                              hintText: AppLocalizations.of(context)!.task_details,
                             ),
                             maxLines: 4,
 
@@ -59,7 +62,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Select Time',
+                          child: Text(AppLocalizations.of(context)!.select_time,
                             style: Theme.of(context).textTheme.titleSmall!.copyWith(
                                 fontWeight: FontWeight.w400
 
@@ -87,7 +90,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('Save Changes',
+                              child: Text(AppLocalizations.of(context)!.save_changes,
                                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                                   color:  MyTheme.whiteColor,
                                 ),

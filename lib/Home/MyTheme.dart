@@ -17,6 +17,13 @@ class MyTheme{
     appBarTheme: AppBarTheme(
       backgroundColor: primaryLight,
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ))
+      )
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedItemColor: primaryLight,
       unselectedItemColor: grayColor,

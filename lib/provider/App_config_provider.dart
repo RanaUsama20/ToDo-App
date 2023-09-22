@@ -1,25 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConfigProvider extends ChangeNotifier{
-  String appLanguage = 'ar';
-  ThemeMode appMode = ThemeMode.light;
+   SharedPreferences? preference;
+  String get appLanguage => preference?.getString('language') ?? 'ar';
+  String get appMode => preference?.getString('mode') ?? 'light';
 
-  void ChangeLanguage(String newLanguage){
+  AppConfigProvider() {
+    loadPrefs();
+  }
+
+  void loadPrefs()async{
+    preference = await SharedPreferences.getInstance();
+    notifyListeners();
+  }
+
+  ThemeMode? appTheme(){
+    if(appMode == 'light' || appMode == 'مضئ' ){
+      return ThemeMode.light;
+    }
+    else if(appMode == 'dark' || appMode == 'داكن'){
+      return ThemeMode.dark;
+    }
+    notifyListeners();
+  }
+
+  Future <void> ChangeLanguage(String newLanguage)async{
     if(appLanguage == newLanguage){
       return;
     }
     else{
-      appLanguage = newLanguage;
+      await preference?.setString('language', newLanguage);
       notifyListeners();
     }
   }
-  void ChangeMode(ThemeMode newMode){
+  Future <void> ChangeMode(String newMode)async{
     if(appMode == newMode){
       return;
     }
     else{
-      appMode = newMode;
-      notifyListeners();
+    await preference?.setString('mode', newMode);
+    notifyListeners();
     }
   }
   bool isDarkMode(){

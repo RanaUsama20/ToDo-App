@@ -5,6 +5,7 @@ import 'package:todo_rana/Settings/LanguageBottomSheet.dart';
 import 'package:todo_rana/Settings/ModeBottomSheet.dart';
 import 'package:todo_rana/provider/App_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsTab extends StatefulWidget {
 
@@ -13,6 +14,7 @@ class SettingsTab extends StatefulWidget {
 }
 
 class _SettingsTabState extends State<SettingsTab> {
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
@@ -93,7 +95,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(provider.appMode == ThemeMode.light?
+                    Text(provider.appTheme() == ThemeMode.light?
                     AppLocalizations.of(context)!.light
                     :
                     AppLocalizations.of(context)!.dark,
@@ -122,4 +124,7 @@ class _SettingsTabState extends State<SettingsTab> {
     showModalBottomSheet(context: context,
         builder: (context) => ModeBottomSheet());
   }
+
+
+
 }

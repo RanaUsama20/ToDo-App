@@ -61,7 +61,7 @@ class TaskListWidget extends StatelessWidget {
                         ),),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(AppLocalizations.of(context)!.description,
                           style: Theme.of(context).textTheme.titleSmall!.copyWith(
                               color: MyTheme.blackColor)),

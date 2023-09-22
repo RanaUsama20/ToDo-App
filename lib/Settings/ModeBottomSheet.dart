@@ -19,7 +19,7 @@ class _ModeBottomSheetState extends State<ModeBottomSheet> {
         children: [
           InkWell(
               onTap: (){
-                provider.ChangeMode(ThemeMode.light) ;
+                provider.ChangeMode('light') ;
 
               },
               child: provider.isDarkMode()?
@@ -29,7 +29,7 @@ class _ModeBottomSheetState extends State<ModeBottomSheet> {
           ),
           InkWell(
               onTap: () {
-                provider.ChangeMode(ThemeMode.dark) ;
+                provider.ChangeMode('dark') ;
               },
               child: provider.isDarkMode()?
               getSelectedItemWidget(AppLocalizations.of(context)!.dark)

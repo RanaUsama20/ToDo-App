@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../model/Task.dart';
 
 
 
@@ -14,6 +17,9 @@ class AddTaskBottomSheet extends StatefulWidget {
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   DateTime selectedDate = DateTime.now();
   var formKey = GlobalKey<FormState>();
+  String title = '';
+  String description = '';
+
 
 
   @override
@@ -32,6 +38,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                    Padding(
                      padding: const EdgeInsets.all(8.0),
                      child: TextFormField(
+                       onChanged: (text) {
+                         title =  text;
+                       },
                        validator: (text) {
                          if (text == null || text.isEmpty){
                            return 'please Enter a title';
@@ -47,6 +56,9 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                    Padding(
                      padding: const EdgeInsets.all(8.0),
                      child: TextFormField(
+                       onChanged: (text) {
+                         description =  text;
+                       },
                        validator: (text) {
                          if (text == null || text.isEmpty){
                            return 'please Enter a Description';
@@ -96,7 +108,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   void showCalender() async{
    var chosenDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: selectedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
    if (chosenDate != null ){
@@ -114,7 +126,19 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void AddTask() {
+    Task task = Task(
+        title: title,
+        description: description,
+        dateTime: selectedDate);
     if (formKey.currentState?.validate() == true){
+      Firebase_Utils.addTaskToFireBase(task).timeout(
+          Duration(
+              milliseconds: 500),
+          onTimeout:(){
+      print('Task is added sucessfully');
+      Navigator.pop(context);
+          }
+      );
 
     }
   }

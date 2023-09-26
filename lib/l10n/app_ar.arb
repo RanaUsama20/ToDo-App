@@ -1,0 +1,20 @@
+{
+"todo_list" : "قائمة المهام",
+"add_new_task" : "ادخل مهمة جديدة",
+"select_time" : "اختر الوقت",
+"language" : "اللغة",
+"mode" : "النمط",
+"english" : "انجليزي",
+"arabic" : "عربي",
+"light" : "مضئ",
+"dark" : "داكن",
+"settings" : "الاعدادات",
+"edit_task" : "عدل المهمة",
+"save_changes" : "احغظ التغيرات",
+"list" : "قائمة",
+"task_title" : "عنوان المهمة",
+"description" : "الوصف",
+"this_is_title" : "العنوان",
+"task_details" : "تفاصيل المهمة",
+"add" : "Add"
+}

@@ -8,14 +8,22 @@ import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/TaskDetailsScreen.dart';
 import 'package:todo_rana/provider/App_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_rana/provider/listProvider.dart';
+
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseFirestore.instance.disableNetwork();
   FirebaseFirestore.instance.settings = Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => AppConfigProvider(),
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (context) => AppConfigProvider()),
+        ChangeNotifierProvider(
+  create: (
+  context) => ListProvider())
+  ],
       child: MyApp()));
 }
 

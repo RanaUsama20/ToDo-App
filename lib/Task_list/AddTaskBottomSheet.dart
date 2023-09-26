@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_rana/provider/listProvider.dart';
 
 import '../model/Task.dart';
 
@@ -19,11 +21,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   var formKey = GlobalKey<FormState>();
   String title = '';
   String description = '';
+  late ListProvider listProvider;
 
 
 
   @override
   Widget build(BuildContext context) {
+    listProvider = Provider.of<ListProvider>(context);
      return Container(
        padding: EdgeInsets.all(12),
        child: Column(
@@ -136,6 +140,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               milliseconds: 500),
           onTimeout:(){
       print('Task is added sucessfully');
+      listProvider.getAllTasksFromFirestore();
       Navigator.pop(context);
           }
       );

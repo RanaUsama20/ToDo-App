@@ -1,13 +1,30 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/Task_widget.dart';
+import 'package:todo_rana/provider/listProvider.dart';
+
+import '../model/Task.dart';
+import '../provider/listProvider.dart';
 
 
-class TaskListTab extends StatelessWidget {
+class TaskListTab extends StatefulWidget {
+
+  @override
+  State<TaskListTab> createState() => _TaskListTabState();
+}
+
+class _TaskListTabState extends State<TaskListTab> {
 
   @override
   Widget build(BuildContext context) {
+    var listProvider = Provider.of<ListProvider>(context);
+    if(listProvider.taskList.isEmpty) {
+      listProvider.getAllTasksFromFirestore();
+    }
     return Column(
       children: [
         CalendarTimeline(
@@ -27,9 +44,9 @@ class TaskListTab extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) {
-              return TaskListWidget();
+              return TaskListWidget( task: listProvider.taskList[index],);
           },
-          itemCount: 20,),
+          itemCount: listProvider.taskList.length,),
         ),
      ],
     );

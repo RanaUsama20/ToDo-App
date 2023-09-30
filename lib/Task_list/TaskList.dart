@@ -28,10 +28,12 @@ class _TaskListTabState extends State<TaskListTab> {
     return Column(
       children: [
         CalendarTimeline(
-          initialDate: DateTime.now(),
+          initialDate: listProvider.selectedDate,
           firstDate: DateTime.now().subtract(Duration(days: 365)),
           lastDate: DateTime.now().add(Duration(days: 365)),
-          onDateSelected: (date) => print(date),
+          onDateSelected: (selectedDate){
+            listProvider.setNewSelectedDate(selectedDate);
+          },
           leftMargin: 20,
           monthColor: MyTheme.blackColor,
           dayColor: MyTheme.blackColor,

@@ -24,5 +24,11 @@ class Firebase_Utils{
     return getTasksCollection().doc(task.id).delete();
   }
 
+  static Future<void> EditTaskInFireStore(Task task){
+    var taskCollection = getTasksCollection();
+    var updatedData = task.toFireStore();
+    updatedData.remove('id');
+    return taskCollection.doc(task.id).update(updatedData);
+  }
 
 }

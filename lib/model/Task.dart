@@ -6,7 +6,7 @@ class Task{
   String? title;
   String? description;
   DateTime? dateTime;
-   bool? isDone;
+   bool isDone;
 
    Task({
     this.id = '',

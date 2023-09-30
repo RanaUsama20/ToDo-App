@@ -10,11 +10,15 @@ import 'package:todo_rana/provider/listProvider.dart';
 import '../model/Task.dart';
 
 
-class TaskListWidget extends StatelessWidget {
+class TaskListWidget extends StatefulWidget {
+  Task task;
+  TaskListWidget({required this.task});
 
-    Task task;
-    TaskListWidget({required this.task});
+  @override
+  State<TaskListWidget> createState() => _TaskListWidgetState();
+}
 
+class _TaskListWidgetState extends State<TaskListWidget> {
   @override
   Widget build(BuildContext context) {
     var listProvider = Provider.of<ListProvider>(context);
@@ -27,7 +31,7 @@ class TaskListWidget extends StatelessWidget {
             SlidableAction(
               borderRadius: BorderRadius.circular(25),
               onPressed:(context) {
-                Firebase_Utils.deleteTaskFromFireStore(task).timeout(
+                Firebase_Utils.deleteTaskFromFireStore(widget.task).timeout(
                     Duration(milliseconds: 500),
                   onTimeout: () {
                       print('Task deleted successfully');
@@ -45,7 +49,8 @@ class TaskListWidget extends StatelessWidget {
 
           child: InkWell(
             onTap: (){
-              Navigator.of(context).pushNamed(TaskDetailsScreen.routeName);
+              Navigator.of(context).pushNamed(TaskDetailsScreen.routeName,
+                  arguments: widget.task);
             },
             child: Container(
             height: 150,
@@ -63,7 +68,9 @@ class TaskListWidget extends StatelessWidget {
                   thickness: 7,
                   indent: 1,
                   endIndent: 0,
-                  color: Theme.of(context).primaryColor,
+                  color: widget.task.isDone?
+                      MyTheme.greenColor :
+                  Theme.of(context).primaryColor,
                 ),
                 Expanded(
                   child: Column(
@@ -71,14 +78,16 @@ class TaskListWidget extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(task.title??'',
+                        child: Text( widget.task.title ?? '',
                           style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                              color: Theme.of(context).primaryColor
+                              color: widget.task.isDone?
+                                   MyTheme.greenColor
+                                  : Theme.of(context).primaryColor,
                           ),),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(task.description??'',
+                        child: Text(widget.task.description??'',
                             style: Theme.of(context).textTheme.titleSmall!.copyWith(
                                 color: MyTheme.blackColor)),
                       ),
@@ -86,18 +95,33 @@ class TaskListWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: Icon(Icons.check,
-                      color: MyTheme.whiteColor,
-                      size: 35),)
+                InkWell(
+                  onTap: () {
+                    setState(() {
+
+                    });
+                    widget.task.isDone = true;
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: widget.task.isDone?
+                          MyTheme.whiteColor
+                          : Theme.of(context).primaryColor,
+                    ),
+                    child: widget.task.isDone?
+                        Text('Done!',
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: MyTheme.greenColor
+                        ),)
+                        : Icon(Icons.check,
+                        color: MyTheme.whiteColor,
+                        size: 35),),
+                )
 
               ],
             )
@@ -106,5 +130,9 @@ class TaskListWidget extends StatelessWidget {
     );
   }
 
-
 }
+
+// class TaskDetailsScreenArguments {
+//   final Task updatedTask;
+//   TaskDetailsScreenArguments({required this.updatedTask});
+// }

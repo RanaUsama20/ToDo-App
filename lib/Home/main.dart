@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_rana/Home/HomeScreen.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/TaskDetailsScreen.dart';
+import 'package:todo_rana/model/Task.dart';
 import 'package:todo_rana/provider/App_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo_rana/provider/listProvider.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget{
       initialRoute: HomeScreen.routeName ,
       routes: {
         HomeScreen.routeName : (context) => HomeScreen(),
-        TaskDetailsScreen.routeName : (context) => TaskDetailsScreen(),
+        TaskDetailsScreen.routeName : (context) => TaskDetailsScreen( updatedTask: ModalRoute.of(context)!.settings.arguments as Task,
+        ),
       },
       theme: MyTheme.lightTheme,
       darkTheme: MyTheme.darkTheme,

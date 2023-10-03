@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_rana/DialogUtils/DialogUtils.dart';
 import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 import 'package:todo_rana/provider/listProvider.dart';
 
 import '../model/Task.dart';
@@ -129,18 +131,27 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     return DateFormat('dd/MM/yyyy').format(date);
   }
 
-  void AddTask() {
+  void AddTask()async {
     Task task = Task(
         title: title,
         description: description,
         dateTime: selectedDate);
     if (formKey.currentState?.validate() == true){
-      Firebase_Utils.addTaskToFireBase(task).timeout(
+      var authProvider = Provider.of<AuthProvider>(context,listen: false);
+      DialogUtils.showLoading(context, 'Loading....');
+     await Firebase_Utils.addTaskToFireBase(task,authProvider.currentUser!.id!).
+     then((value) {
+       DialogUtils.hideLoading(context);
+       DialogUtils.showMessage(context, 'Todo added successfully',posActionName: 'ok',
+       isDismissible: true);
+
+     })
+      .timeout(
           Duration(
               milliseconds: 500),
           onTimeout:(){
       print('Task is added sucessfully');
-      listProvider.getAllTasksFromFirestore();
+      listProvider.getAllTasksFromFirestore(authProvider.currentUser!.id!);
       Navigator.pop(context);
           }
       );

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/Task_widget.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 import 'package:todo_rana/provider/listProvider.dart';
 
 import '../model/Task.dart';
@@ -22,8 +23,10 @@ class _TaskListTabState extends State<TaskListTab> {
   @override
   Widget build(BuildContext context) {
     var listProvider = Provider.of<ListProvider>(context);
+    var authProvider = Provider.of<AuthProvider>(context,listen: false);
+
     if(listProvider.taskList.isEmpty) {
-      listProvider.getAllTasksFromFirestore();
+      listProvider.getAllTasksFromFirestore(authProvider.currentUser!.id!);
     }
     return Column(
       children: [
@@ -32,7 +35,7 @@ class _TaskListTabState extends State<TaskListTab> {
           firstDate: DateTime.now().subtract(Duration(days: 365)),
           lastDate: DateTime.now().add(Duration(days: 365)),
           onDateSelected: (selectedDate){
-            listProvider.setNewSelectedDate(selectedDate);
+            listProvider.setNewSelectedDate(selectedDate,authProvider.currentUser!.id!);
           },
           leftMargin: 20,
           monthColor: MyTheme.blackColor,

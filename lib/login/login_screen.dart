@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_rana/DialogUtils/DialogUtils.dart';
 import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/HomeScreen.dart';
 import 'package:todo_rana/custom_text_form_field/custom_text_form_field.dart';
 import 'package:todo_rana/register/register_screen.dart';
+
+import '../provider/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'login Screen';
@@ -116,7 +119,13 @@ class _LoginScreenState extends State<LoginScreen> {
             email: emailController.text,
             password: passwordController.text
         );
+       var user = await Firebase_Utils.readUserFromFireStore(credential.user?.uid??'');
 
+        if(user == null){
+         return;
+       }
+        var authProvider = Provider.of<AuthProvider>(context,listen: false);
+        authProvider.updateUser(user);
         DialogUtils.hideLoading(context);
         DialogUtils.showMessage(context,
             'Login successfully',

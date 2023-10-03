@@ -6,6 +6,7 @@ import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo_rana/model/Task.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 import 'package:todo_rana/provider/listProvider.dart';
 
 
@@ -108,14 +109,15 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                             widget.updatedTask.title = titleController.text;
                             widget.updatedTask.description = descriptionController.text;
                             widget.updatedTask.dateTime = selectedDate;
-                            Firebase_Utils.EditTaskInFireStore(widget.updatedTask)
+                            var authProvider = Provider.of<AuthProvider>(context,listen: false);
+                            Firebase_Utils.EditTaskInFireStore(widget.updatedTask,authProvider.currentUser!.id!)
                                 .then((_) {
                               print('Task updated successfully');
                             })
                                 .catchError((error) {
                               print('Error updating task: $error');
                             });
-                           listProvider.getAllTasksFromFirestore();
+                           listProvider.getAllTasksFromFirestore(authProvider.currentUser!.id!);
 
                           },
                               child: Padding(

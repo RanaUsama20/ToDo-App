@@ -10,6 +10,7 @@ import 'package:todo_rana/login/login_screen.dart';
 import 'package:todo_rana/model/Task.dart';
 import 'package:todo_rana/provider/App_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 import 'package:todo_rana/provider/listProvider.dart';
 import 'package:todo_rana/register/register_screen.dart';
 
@@ -25,9 +26,11 @@ void main()async{
         ChangeNotifierProvider(
             create: (context) => AppConfigProvider()),
         ChangeNotifierProvider(
-  create: (
-  context) => ListProvider())
-  ],
+            create: (context) => ListProvider()),
+        ChangeNotifierProvider(
+            create: (context) => AuthProvider()),
+
+      ],
       child: MyApp()));
 }
 

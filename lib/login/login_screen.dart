@@ -1,13 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_rana/DialogUtils/DialogUtils.dart';
 import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
+import 'package:todo_rana/Home/HomeScreen.dart';
 import 'package:todo_rana/custom_text_form_field/custom_text_form_field.dart';
 import 'package:todo_rana/register/register_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String routeName = 'login Screen';
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  var emailController = TextEditingController(text: 'Rana@route.com');
+
+  var passwordController = TextEditingController(text: '123456789');
+
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -98,21 +108,34 @@ class LoginScreen extends StatelessWidget {
 
   void login()async {
     if(formKey.currentState?.validate() == true) {
+
+      DialogUtils.showLoading(context, 'Loading....');
+
       try {
         final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: emailController.text,
             password: passwordController.text
         );
-        print('login successfully');
-        print(credential.user?.uid ??'');
+
+        DialogUtils.hideLoading(context);
+        DialogUtils.showMessage(context,
+            'Login successfully',
+            title: 'success',
+            posActionName: 'Ok',
+            posAction: (){
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
+            });
+
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
+          DialogUtils.showMessage(context, 'No user found for that email.');
         } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+          DialogUtils.showMessage(context, 'Wrong password provided for that user.');
+
         }
       } catch(e){
-        print('error ${e.toString()}');
+        DialogUtils.showMessage(context, e.toString());
+
       }
     }
   }

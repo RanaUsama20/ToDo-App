@@ -16,8 +16,9 @@ import 'package:todo_rana/register/register_screen.dart';
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseFirestore.instance.disableNetwork();
-  FirebaseFirestore.instance.settings = Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  // await FirebaseFirestore.instance.disableNetwork();
+  // FirebaseFirestore.instance.settings = Settings(
+  //     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
 
   runApp(MultiProvider(
       providers: [

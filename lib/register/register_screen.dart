@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_rana/DialogUtils/DialogUtils.dart';
+import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/HomeScreen.dart';
+import 'package:todo_rana/model/my_user.dart';
 
 import 'package:todo_rana/custom_text_form_field/custom_text_form_field.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register Screen';
@@ -117,12 +121,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void register()async {
     if(formKey.currentState?.validate() == true){
 
-
+      DialogUtils.showLoading(context, 'Loading....');
       try {
         final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
+        MyUser myUser = MyUser(
+            id: credential.user?.uid??'',
+            name: nameController.text,
+            email: emailController.text);
+        var authProvider = Provider.of<AuthProvider>(context,listen: false);
+        authProvider.updateUser(myUser);
+        await Firebase_Utils.addUserToFireStore(myUser);
+
         DialogUtils.hideLoading(context);
         DialogUtils.showMessage(context,
             'register successfully',

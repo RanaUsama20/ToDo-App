@@ -5,6 +5,7 @@ import 'package:todo_rana/Firebase_utils/Firebase_utils.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/TaskDetailsScreen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:todo_rana/provider/auth_provider.dart';
 import 'package:todo_rana/provider/listProvider.dart';
 
 import '../model/Task.dart';
@@ -31,11 +32,12 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             SlidableAction(
               borderRadius: BorderRadius.circular(25),
               onPressed:(context) {
-                Firebase_Utils.deleteTaskFromFireStore(widget.task).timeout(
+                var authProvider = Provider.of<AuthProvider>(context,listen: false);
+                Firebase_Utils.deleteTaskFromFireStore(widget.task,authProvider.currentUser!.id!).timeout(
                     Duration(milliseconds: 500),
                   onTimeout: () {
                       print('Task deleted successfully');
-                      listProvider.getAllTasksFromFirestore();
+                      listProvider.getAllTasksFromFirestore(authProvider.currentUser!.id!);
 
                     },);
               },

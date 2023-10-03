@@ -26,7 +26,7 @@ class DialogUtils{
   static void showMessage(
       BuildContext context, String message ,
       {String? posActionName, VoidCallback? posAction,
-      String? NegActionName, VoidCallback? NegAction,
+      // String? NegActionName, VoidCallback? NegAction,
       bool isDismissible =  false, String title = 'Title'})
   {
     List<Widget> actions = [];
@@ -40,14 +40,14 @@ class DialogUtils{
           child: Text(posActionName!)));
     }
 
-    if(NegActionName != Null){
-      actions.add(TextButton(
-          onPressed: (){
-            Navigator.pop(context);
-            NegAction?.call();
-          },
-          child: Text(posActionName!)));
-    }
+    // if(NegActionName != Null){
+    //   actions.add(TextButton(
+    //       onPressed: (){
+    //         Navigator.pop(context);
+    //         NegAction?.call();
+    //       },
+    //       child: Text(posActionName!)));
+    // }
 
     showDialog(
       barrierDismissible: isDismissible,

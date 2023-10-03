@@ -1,16 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_rana/DialogUtils/DialogUtils.dart';
+import 'package:todo_rana/Home/HomeScreen.dart';
 
 import 'package:todo_rana/custom_text_form_field/custom_text_form_field.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register Screen';
-  var  nameController = TextEditingController();
-  var  emailController = TextEditingController();
-  var  passwordController = TextEditingController();
-  var  confirmPasswordController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  var  nameController = TextEditingController(text: 'Rana');
+
+  var  emailController = TextEditingController(text: 'Rana@route.com');
+
+  var  passwordController = TextEditingController(text: '123456789');
+
+  var  confirmPasswordController = TextEditingController(text: '123456789');
+
+  var formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -105,21 +116,30 @@ class RegisterScreen extends StatelessWidget {
 
   void register()async {
     if(formKey.currentState?.validate() == true){
+
+
       try {
         final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
-        print('register successfully');
-        print(credential.user?.uid ??'');
+        DialogUtils.hideLoading(context);
+        DialogUtils.showMessage(context,
+            'register successfully',
+            title: 'success',
+            posActionName: 'Ok',
+            posAction: (){
+              Navigator.of(context).pushNamed(HomeScreen.routeName);
+            });
+
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
+          DialogUtils.showMessage(context, 'The password provided is too weak.');
         } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
+          DialogUtils.showMessage(context, 'The account already exists for that email.');
         }
       }  catch(e){
-        print('error ${e.toString()}');
+        DialogUtils.showMessage(context, e.toString());
       }
     }
   }

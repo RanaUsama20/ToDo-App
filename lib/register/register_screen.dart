@@ -1,0 +1,126 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+import 'package:todo_rana/custom_text_form_field/custom_text_form_field.dart';
+
+class RegisterScreen extends StatelessWidget {
+  static const String routeName = 'register Screen';
+  var  nameController = TextEditingController();
+  var  emailController = TextEditingController();
+  var  passwordController = TextEditingController();
+  var  confirmPasswordController = TextEditingController();
+  var formKey = GlobalKey<FormState>();
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset(
+            'assets/images/main_background.png',
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          Form(
+             key: formKey,
+              child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                ),
+                CustomTextFormField(
+                  controller: nameController,
+                  myValidator:(text) {
+                    if(text == null || text.trim().isEmpty){
+                      return 'please enter the username ';
+                    }
+                    return null;
+                  },
+                  label: 'User Name',
+                ),
+                CustomTextFormField(
+                  controller: emailController,
+                  myValidator:(text) {
+                    if(text == null || text.trim().isEmpty){
+                      return 'please enter Email Address ';
+                    }
+                    bool emailValid =
+                    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(text);
+                    if(!emailValid){
+                      return 'please enter a valid email';
+                    }
+                    return null;
+                  },
+
+                  label: 'Email',
+                ),
+                CustomTextFormField(
+                    label: 'password',
+                    controller: passwordController,
+                    myValidator: (text) {
+                      if(text == null || text.trim().isEmpty){
+                        return 'please enter a password';
+                      }
+                      if(text.length < 6){
+                        return 'password should be at least 6 chars';
+                      }
+                      return null;
+                    },
+                isPassword: true,
+                keyboardType: TextInputType.number),
+                CustomTextFormField(
+                    controller: confirmPasswordController,
+                    myValidator:(text) {
+                      if(text == null || text.trim().isEmpty){
+                        return 'please enter the password ';
+                      }
+                      if(text != passwordController.text){
+                        return "password doesn't match";
+                      }
+                      return null;
+                    },
+                    label: 'Confirm Password',
+                    isPassword: true,
+                    keyboardType: TextInputType.number),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: (){
+                        register();
+                      },
+                      child: Text('Register',
+                      style: Theme.of(context).textTheme.titleLarge,)),
+                ),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
+  void register()async {
+    if(formKey.currentState?.validate() == true){
+      try {
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        print('register successfully');
+        print(credential.user?.uid ??'');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      }  catch(e){
+        print('error ${e.toString()}');
+      }
+    }
+  }
+}

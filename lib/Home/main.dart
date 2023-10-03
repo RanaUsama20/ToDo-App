@@ -6,10 +6,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_rana/Home/HomeScreen.dart';
 import 'package:todo_rana/Home/MyTheme.dart';
 import 'package:todo_rana/Task_list/TaskDetailsScreen.dart';
+import 'package:todo_rana/login/login_screen.dart';
 import 'package:todo_rana/model/Task.dart';
 import 'package:todo_rana/provider/App_config_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:todo_rana/provider/listProvider.dart';
+import 'package:todo_rana/register/register_screen.dart';
 
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,12 +41,14 @@ class MyApp extends StatelessWidget{
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       title: 'ToDo App',
-      initialRoute: HomeScreen.routeName ,
+      initialRoute: LoginScreen.routeName ,
       routes: {
         HomeScreen.routeName : (context) => HomeScreen(),
-        TaskDetailsScreen.routeName : (context) => TaskDetailsScreen( updatedTask: ModalRoute.of(context)!.settings.arguments as Task,
-        ),
-      },
+        TaskDetailsScreen.routeName : (context) => TaskDetailsScreen(
+          updatedTask: ModalRoute.of(context)!.settings.arguments as Task,),
+        RegisterScreen.routeName : (context) => RegisterScreen(),
+        LoginScreen.routeName : (context) => LoginScreen()
+    },
       theme: MyTheme.lightTheme,
       darkTheme: MyTheme.darkTheme,
       themeMode: provider.appTheme(),
